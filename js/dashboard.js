@@ -89,6 +89,9 @@ function criarCardImovel(imovel) {
         <button onclick="abrirConsumo(${imovel.id})">
             Gerenciar consumo
         </button>
+        <button onclick="abrirAparelhos(${imovel.id})">
+            Aparelhos
+        </button>
         <button onclick="mostrarGrafico(${imovel.id})">
             Ver gráfico
         </button>
@@ -153,6 +156,12 @@ function calcularResumo(consumos) {
 function abrirConsumo(id) {
   localStorage.setItem("imovelSelecionado", id);
   window.location.href = "consumo.html";
+}
+
+// ABRIR APARELHOS
+function abrirAparelhos(id) {
+  localStorage.setItem("imovelSelecionado", id);
+  window.location.href = "aparelhos.html";
 }
 
 // MOSTRAR GRÁFICO
@@ -260,6 +269,13 @@ function removerImovel(imovelId) {
     return registro.imovelId !== imovelId;
   });
   localStorage.setItem("consumos", JSON.stringify(consumos));
+
+  // REMOVER APARELHOS DO IMÓVEL
+  let aparelhos = JSON.parse(localStorage.getItem("aparelhos")) || [];
+  aparelhos = aparelhos.filter(function (aparelho) {
+    return aparelho.imovelId !== imovelId;
+  });
+  localStorage.setItem("aparelhos", JSON.stringify(aparelhos));
 
   // LIMPAR IMÓVEL SELECIONADO
   const selecionado = Number(localStorage.getItem("imovelSelecionado"));

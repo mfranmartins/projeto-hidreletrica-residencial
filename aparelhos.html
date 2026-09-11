@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aparelhos - Hidrelétrica Residencial</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Aparelhos</h1>
+      <h2 id="nomeImovel"></h2>
+      <hr />
+      <h2>Cadastrar aparelho</h2>
+      <form id="aparelhoForm">
+        <label for="nome"> Nome do aparelho: </label>
+        <input type="text" id="nome" placeholder="Ex: Geladeira" required />
+        <label for="categoria"> Categoria: </label>
+        <select id="categoria" required>
+          <option value="">Selecione</option>
+          <option value="Eletrodoméstico">Eletrodoméstico</option>
+          <option value="Eletrônico">Eletrônico</option>
+          <option value="Iluminação">Iluminação</option>
+          <option value="Climatização">Climatização</option>
+          <option value="Outros">Outros</option>
+        </select>
+        <label for="potencia"> Potência nominal (W): </label>
+        <input
+          type="number"
+          id="potencia"
+          min="0"
+          step="0.01"
+          placeholder="Ex: 150"
+          required
+        />
+        <label for="quantidade"> Quantidade: </label>
+        <input
+          type="number"
+          id="quantidade"
+          min="1"
+          step="1"
+          value="1"
+          required
+        />
+        <label for="horasUso"> Horas de uso por dia: </label>
+        <input
+          type="number"
+          id="horasUso"
+          min="0"
+          max="24"
+          step="0.5"
+          placeholder="Ex: 5"
+          required
+        />
+        <label for="marca"> Marca: </label>
+        <input type="text" id="marca" placeholder="Ex: Consul" required />
+        <label for="modelo"> Modelo: </label>
+        <input type="text" id="modelo" placeholder="Ex: CRM39" required />
+        <label for="tensao"> Tensão: </label>
+        <select id="tensao" required>
+          <option value="">Selecione</option>
+          <option value="110V">110V</option>
+          <option value="127V">127V</option>
+          <option value="220V">220V</option>
+          <option value="Bivolt">Bivolt</option>
+        </select>
+        <label for="eficiencia"> Eficiência energética: </label>
+        <select id="eficiencia" required>
+          <option value="">Selecione</option>
+          <option value="A">A - Muito eficiente</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E - Menos eficiente</option>
+        </select>
+        <br /><br />
+        <button type="submit">Cadastrar aparelho</button>
+      </form>
+      <p id="mensagem"></p>
+      <hr />
+      <h2>Aparelhos cadastrados</h2>
+      <div id="listaAparelhos"></div>
+      <hr />
+      <h2>Consumo estimado</h2>
+      <p>Consumo estimado total:</p>
+      <h3 id="consumoTotal">0 kWh/mês</h3>
+      <br />
+      <a href="dashboard.html"> Voltar para o dashboard </a>
+    </main>
+    <script src="js/aparelhos.js"></script>
+  </body>
+</html>
