@@ -41,6 +41,7 @@ aparelhoForm.addEventListener("submit", function (event) {
   const horasUso = Number(document.getElementById("horasUso").value);
   const marca = document.getElementById("marca").value.trim();
   const modelo = document.getElementById("modelo").value.trim();
+  const anoFabricacao = Number(document.getElementById("anoFabricacao").value);
   const tensao = document.getElementById("tensao").value;
   const eficiencia = document.getElementById("eficiencia").value;
 
@@ -66,6 +67,11 @@ aparelhoForm.addEventListener("submit", function (event) {
   }
   if (horasUso < 0 || horasUso > 24) {
     mostrarMensagem("As horas de uso devem estar entre 0 e 24.");
+    return;
+  }
+  const anoAtual = new Date().getFullYear();
+  if (anoFabricacao < 1900 || anoFabricacao > anoAtual) {
+    mostrarMensagem("Informe um ano de fabricação válido.");
     return;
   }
 
@@ -95,6 +101,7 @@ aparelhoForm.addEventListener("submit", function (event) {
         horasUso: horasUso,
         marca: marca,
         modelo: modelo,
+        anoFabricacao: anoFabricacao,
         tensao: tensao,
         eficiencia: eficiencia,
         consumoMensal: consumoMensal,
@@ -117,6 +124,7 @@ aparelhoForm.addEventListener("submit", function (event) {
       horasUso: horasUso,
       marca: marca,
       modelo: modelo,
+      anoFabricacao: anoFabricacao,
       tensao: tensao,
       eficiencia: eficiencia,
       consumoMensal: consumoMensal,
@@ -125,14 +133,8 @@ aparelhoForm.addEventListener("submit", function (event) {
     mostrarMensagem("Aparelho cadastrado com sucesso!");
   }
 
-  // ADICIONAR À LISTA
-  aparelhos.push(novoAparelho);
-
   // SALVAR
   localStorage.setItem("aparelhos", JSON.stringify(aparelhos));
-
-  // MENSAGEM
-  mostrarMensagem("Aparelho cadastrado com sucesso!");
 
   // LIMPAR FORMULÁRIO
   aparelhoForm.reset();
@@ -146,6 +148,77 @@ aparelhoForm.addEventListener("submit", function (event) {
 // MOSTRAR MENSAGEM
 function mostrarMensagem(texto) {
   document.getElementById("mensagem").textContent = texto;
+}
+
+// GERAR FEEDBACK
+function gerarFeedback(aparelho) {
+  if (!aparelho.anoFabricacao || !aparelho.eficiencia) {
+    return {
+      tipo: "indisponivel",
+      texto:
+        "Não há dados suficientes para avaliar a obsolescência deste aparelho.",
+    };
+  }
+  const anoAtual = new Date().getFullYear();
+  const idade = anoAtual - aparelho.anoFabricacao;
+  const eficiencia = aparelho.eficiencia;
+  const consumo = aparelho.consumoMensal;
+
+  // Aparelho muito antigo
+  if (idade >= 15) {
+    return {
+      tipo: "alerta",
+      texto:
+        "Este aparelho possui " +
+        idade +
+        " anos. Considere avaliar a substituição por um modelo mais eficiente.",
+    };
+  }
+
+  // Antigo + baixa eficiência
+  if (
+    idade >= 10 &&
+    (eficiencia === "C" || eficiencia === "D" || eficiencia === "E")
+  ) {
+    return {
+      tipo: "alerta",
+      texto:
+        "Este aparelho possui " +
+        idade +
+        " anos e classificação de eficiência " +
+        eficiencia +
+        ". Considere avaliar a substituição por um modelo mais eficiente.",
+    };
+  }
+
+  // Médio/antigo + consumo elevado
+  if (idade >= 6 && consumo >= 50) {
+    return {
+      tipo: "atencao",
+      texto:
+        "Este aparelho possui " +
+        idade +
+        " anos e apresenta consumo estimado de " +
+        consumo.toFixed(2) +
+        " kWh/mês. Vale a pena avaliar alternativas mais eficientes.",
+    };
+  }
+
+  // Boa situação
+  if (idade <= 5 && (eficiencia === "A" || eficiencia === "B")) {
+    return {
+      tipo: "bom",
+      texto:
+        "Este aparelho é relativamente novo e possui boa classificação de eficiência energética.",
+    };
+  }
+
+  // Situação sem alerta específico
+  return {
+    tipo: "normal",
+    texto:
+      "Não foram identificados sinais relevantes de obsolescência energética com os dados informados.",
+  };
 }
 
 // MOSTRAR APARELHOS
@@ -168,6 +241,8 @@ function mostrarAparelhos() {
 
   // MOSTRAR CADA APARELHO
   aparelhosImovel.forEach(function (aparelho) {
+    const feedback = gerarFeedback(aparelho);
+    const idade = new Date().getFullYear() - aparelho.anoFabricacao;
     const div = document.createElement("div");
     div.innerHTML = `
                 <hr>
@@ -199,8 +274,16 @@ function mostrarAparelhos() {
                     ${aparelho.modelo}
                 </p>
                 <p>
+                    <strong>Ano de fabricação:</strong>
+                    ${aparelho.anoFabricacao}
+              </p>
+                <p>
                     <strong>Tensão:</strong>
                     ${aparelho.tensao}
+                </p>
+                <p>
+                    <strong>Idade aproximada:</strong>
+                    ${idade} anos
                 </p>
                 <p>
                     <strong>Eficiência:</strong>
@@ -212,6 +295,12 @@ function mostrarAparelhos() {
                     </strong>
                     ${aparelho.consumoMensal.toFixed(2)}
                     kWh/mês
+                </p>
+                <p>
+                    <strong>Feedback energético:</strong>
+                </p>
+                <p>
+                    ${feedback.texto}
                 </p>
                 <button
                     onclick="editarAparelho(${aparelho.id})"
@@ -267,6 +356,7 @@ function editarAparelho(aparelhoId) {
   document.getElementById("horasUso").value = aparelho.horasUso;
   document.getElementById("marca").value = aparelho.marca;
   document.getElementById("modelo").value = aparelho.modelo;
+  document.getElementById("anoFabricacao").value = aparelho.anoFabricacao;
   document.getElementById("tensao").value = aparelho.tensao;
   document.getElementById("eficiencia").value = aparelho.eficiencia;
   // Guardar qual aparelho está sendo editado

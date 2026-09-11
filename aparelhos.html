@@ -56,6 +56,15 @@
         <input type="text" id="marca" placeholder="Ex: Consul" required />
         <label for="modelo"> Modelo: </label>
         <input type="text" id="modelo" placeholder="Ex: CRM39" required />
+        <label for="anoFabricacao"> Ano de fabricação: </label>
+        <input
+          type="number"
+          id="anoFabricacao"
+          min="1900"
+          max="2026"
+          placeholder="Ex: 2015"
+          required
+        />
         <label for="tensao"> Tensão: </label>
         <select id="tensao" required>
           <option value="">Selecione</option>
