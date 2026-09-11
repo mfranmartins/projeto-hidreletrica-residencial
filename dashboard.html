@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Hidrelétrica Residencial</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Hidrelétrica Residencial</h1>
+
+      <h2 id="boasVindas"></h2>
+
+      <p>Bem-vindo ao sistema de dimensionamento energético residencial.</p>
+
+      <hr />
+
+      <h3>Imóveis</h3>
+
+      <button onclick="cadastrarImovel()">Cadastrar imóvel</button>
+
+      <h3>Consumo</h3>
+
+      <p>Aqui será exibido o histórico de consumo dos seus imóveis.</p>
+
+      <h3>Aparelhos</h3>
+
+      <p>Aqui será possível cadastrar os aparelhos da residência.</p>
+
+      <button onclick="logout()">Sair</button>
+    </main>
+    <script>
+      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+      // Impede acesso sem login
+      if (!usuario) {
+        window.location.href = "index.html";
+      }
+
+      document.getElementById("boasVindas").textContent =
+        "Olá, " + usuario.nome + "!";
+
+      function cadastrarImovel() {
+        alert("Tela de cadastro de imóvel será implementada.");
+      }
+
+      function logout() {
+        localStorage.removeItem("usuarioLogado");
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>
