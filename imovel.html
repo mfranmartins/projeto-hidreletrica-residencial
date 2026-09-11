@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cadastro de Imóvel</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <main class="container">
+      <h1>Cadastro de Imóvel</h1>
+
+      <form id="imovelForm">
+        <label for="identificacao">Identificação do imóvel:</label>
+        <input
+          type="text"
+          id="identificacao"
+          placeholder="Ex: Minha casa"
+          required
+        />
+
+        <label for="endereco">Endereço/Localidade:</label>
+        <input
+          type="text"
+          id="endereco"
+          placeholder="Ex: São Paulo - SP"
+          required
+        />
+
+        <label for="tipo">Tipo do imóvel:</label>
+
+        <select id="tipo" required>
+          <option value="">Selecione</option>
+          <option value="Casa">Casa</option>
+          <option value="Apartamento">Apartamento</option>
+          <option value="Kitnet">Kitnet</option>
+          <option value="Outro">Outro</option>
+        </select>
+
+        <button type="submit">Cadastrar imóvel</button>
+      </form>
+
+      <p id="mensagem"></p>
+
+      <br />
+
+      <a href="dashboard.html"> Voltar para o dashboard </a>
+    </main>
+
+    <script src="js/imoveis.js"></script>
+  </body>
+</html>

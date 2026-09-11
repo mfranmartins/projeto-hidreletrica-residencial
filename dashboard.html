@@ -20,6 +20,8 @@
 
       <button onclick="cadastrarImovel()">Cadastrar imóvel</button>
 
+      <div id="listaImoveis"></div>
+
       <h3>Consumo</h3>
 
       <p>Aqui será exibido o histórico de consumo dos seus imóveis.</p>
@@ -40,9 +42,45 @@
 
       document.getElementById("boasVindas").textContent =
         "Olá, " + usuario.nome + "!";
+      const imoveis = JSON.parse(localStorage.getItem("imoveis")) || [];
+      const listaImoveis = document.getElementById("listaImoveis");
+      const meusImoveis = imoveis.filter(function (imovel) {
+        return imovel.usuarioId === usuario.id;
+      });
+
+      if (meusImoveis.length === 0) {
+        listaImoveis.innerHTML = "<p>Nenhum imóvel cadastrado.</p>";
+      } else {
+        meusImoveis.forEach(function (imovel) {
+          const div = document.createElement("div");
+          div.innerHTML = `
+            <hr>
+
+            <h4>${imovel.identificacao}</h4>
+            <p>
+                <strong>Localidade:</strong>
+                ${imovel.endereco}
+            </p>
+            <p>
+                <strong>Tipo:</strong>
+                ${imovel.tipo}
+            </p>
+            <button onclick="selecionarImovel(${imovel.id})">
+                Selecionar imóvel
+            </button>
+        `;
+          listaImoveis.appendChild(div);
+        });
+      }
 
       function cadastrarImovel() {
-        alert("Tela de cadastro de imóvel será implementada.");
+        window.location.href = "imovel.html";
+      }
+
+      function selecionarImovel(id) {
+        localStorage.setItem("imovelSelecionado", id);
+
+        alert("Imóvel selecionado!");
       }
 
       function logout() {
