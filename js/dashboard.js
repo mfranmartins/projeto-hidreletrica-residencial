@@ -1,3 +1,4 @@
+// USUÁRIO LOGADO
 const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
 
 // VERIFICAR LOGIN
@@ -13,11 +14,13 @@ document.getElementById("boasVindas").textContent =
 const imoveis = JSON.parse(localStorage.getItem("imoveis")) || [];
 const listaImoveis = document.getElementById("listaImoveis");
 
-// Somente imóveis do usuário logado
+// PEGAR SOMENTE OS IMÓVEIS
+// DO USUÁRIO LOGADO
 const meusImoveis = imoveis.filter(function (imovel) {
   return imovel.usuarioId === usuario.id;
 });
 
+// EXIBIR IMÓVEIS
 if (meusImoveis.length === 0) {
   listaImoveis.innerHTML = "<p>Nenhum imóvel cadastrado.</p>";
 } else {
@@ -32,12 +35,14 @@ function criarCardImovel(imovel) {
   const consumosImovel = consumos.filter(function (registro) {
     return registro.imovelId === imovel.id;
   });
-
-  let resumo = calcularResumo(consumosImovel);
+  const resumo = calcularResumo(consumosImovel);
   const div = document.createElement("div");
+
   div.innerHTML = `
         <hr>
-        <h3>${imovel.identificacao}</h3>
+        <h3>
+            ${imovel.identificacao}
+        </h3>
         <p>
             <strong>Localidade:</strong>
             ${imovel.endereco}
@@ -50,19 +55,22 @@ function criarCardImovel(imovel) {
         <p>
             Consumo médio:
             <strong>
-                ${resumo.media.toFixed(2)} kWh/mês
+                ${resumo.media.toFixed(2)}
+                kWh/mês
             </strong>
         </p>
         <p>
             Maior consumo:
             <strong>
-                ${resumo.maximo.toFixed(2)} kWh/mês
+                ${resumo.maximo.toFixed(2)}
+                kWh/mês
             </strong>
         </p>
         <p>
             Menor consumo:
             <strong>
-                ${resumo.minimo.toFixed(2)} kWh/mês
+                ${resumo.minimo.toFixed(2)}
+                kWh/mês
             </strong>
         </p>
         <p>
@@ -77,15 +85,15 @@ function criarCardImovel(imovel) {
                 ${resumo.quantidade}
             </strong>
         </p>
-
+        <br>
         <button onclick="abrirConsumo(${imovel.id})">
-            Histórico de consumo
-        </button>
-        <button onclick="abrirConsumo(${imovel.id})">
-            Cadastrar consumo
+            Gerenciar consumo
         </button>
         <button onclick="mostrarGrafico(${imovel.id})">
             Ver gráfico
+        </button>
+        <button onclick="removerImovel(${imovel.id})">
+            Remover imóvel
         </button>
     `;
   listaImoveis.appendChild(div);
@@ -102,7 +110,6 @@ function calcularResumo(consumos) {
       quantidade: 0,
     };
   }
-
   let total = 0;
   let maximo = consumos[0];
   let minimo = consumos[0];
@@ -148,16 +155,14 @@ function abrirConsumo(id) {
   window.location.href = "consumo.html";
 }
 
-// CADASTRAR IMÓVEL
-function cadastrarImovel() {
-  window.location.href = "imovel.html";
-}
+// MOSTRAR GRÁFICO
 function mostrarGrafico(imovelId) {
+  // Guardar o imóvel atualmente selecionado
+  localStorage.setItem("imovelSelecionado", imovelId);
   const consumos = JSON.parse(localStorage.getItem("consumos")) || [];
   const consumosImovel = consumos.filter(function (registro) {
     return registro.imovelId === imovelId;
   });
-
   consumosImovel.sort(function (a, b) {
     if (a.ano !== b.ano) {
       return a.ano - b.ano;
@@ -184,17 +189,21 @@ function mostrarGrafico(imovelId) {
   const labels = consumosImovel.map(function (registro) {
     return nomesMeses[registro.mes] + "/" + registro.ano;
   });
-
   const valores = consumosImovel.map(function (registro) {
     return registro.consumo;
   });
-
+  const imovel = meusImoveis.find(function (imovel) {
+    return imovel.id === imovelId;
+  });
+  if (imovel) {
+    document.getElementById("nomeGrafico").textContent =
+      "Consumo de " + imovel.identificacao;
+  }
   const canvas = document.getElementById("graficoConsumo");
 
   if (window.meuGrafico) {
     window.meuGrafico.destroy();
   }
-
   window.meuGrafico = new Chart(canvas, {
     type: "line",
     data: {
@@ -216,4 +225,72 @@ function mostrarGrafico(imovelId) {
       },
     },
   });
+}
+
+// REMOVER IMÓVEL
+function removerImovel(imovelId) {
+  const imovel = meusImoveis.find(function (imovel) {
+    return imovel.id === imovelId;
+  });
+
+  if (!imovel) {
+    return;
+  }
+
+  const confirmar = confirm(
+    "Tem certeza que deseja remover o imóvel " +
+      imovel.identificacao +
+      "?\n\n" +
+      "Os registros de consumo desse imóvel também serão removidos.",
+  );
+  if (!confirmar) {
+    return;
+  }
+
+  // REMOVER IMÓVEL
+  let imoveisAtualizados = JSON.parse(localStorage.getItem("imoveis")) || [];
+  imoveisAtualizados = imoveisAtualizados.filter(function (imovel) {
+    return imovel.id !== imovelId;
+  });
+  localStorage.setItem("imoveis", JSON.stringify(imoveisAtualizados));
+
+  // REMOVER CONSUMOS DO IMÓVEL
+  let consumos = JSON.parse(localStorage.getItem("consumos")) || [];
+  consumos = consumos.filter(function (registro) {
+    return registro.imovelId !== imovelId;
+  });
+  localStorage.setItem("consumos", JSON.stringify(consumos));
+
+  // LIMPAR IMÓVEL SELECIONADO
+  const selecionado = Number(localStorage.getItem("imovelSelecionado"));
+  if (selecionado === imovelId) {
+    localStorage.removeItem("imovelSelecionado");
+  }
+
+  // RECARREGAR DASHBOARD
+  window.location.reload();
+}
+
+// CADASTRAR IMÓVEL
+function cadastrarImovel() {
+  window.location.href = "imovel.html";
+}
+
+// LOGOUT
+function logout() {
+  localStorage.removeItem("usuarioLogado");
+  localStorage.removeItem("imovelSelecionado");
+  window.location.href = "index.html";
+}
+
+// CARREGAR GRÁFICO AUTOMATICAMENTE
+const imovelSelecionado = Number(localStorage.getItem("imovelSelecionado"));
+
+if (imovelSelecionado) {
+  const existe = meusImoveis.some(function (imovel) {
+    return imovel.id === imovelSelecionado;
+  });
+  if (existe) {
+    mostrarGrafico(imovelSelecionado);
+  }
 }

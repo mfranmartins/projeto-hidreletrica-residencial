@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Hidrelétrica Residencial</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <main class="container">
@@ -15,10 +16,12 @@
       <button onclick="cadastrarImovel()">Cadastrar imóvel</button>
       <div id="listaImoveis"></div>
       <hr />
-      <h2>Histórico de consumo</h2>
+      <h2>Gráfico de consumo</h2>
+      <p id="nomeGrafico">Selecione um imóvel para visualizar o gráfico.</p>
       <canvas id="graficoConsumo"></canvas>
+      <br />
+      <button onclick="logout()">Sair</button>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/dashboard.js"></script>
   </body>
 </html>
