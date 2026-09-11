@@ -9,84 +9,16 @@
   <body>
     <main class="container">
       <h1>Hidrelétrica Residencial</h1>
-
       <h2 id="boasVindas"></h2>
-
-      <p>Bem-vindo ao sistema de dimensionamento energético residencial.</p>
-
       <hr />
-
-      <h3>Imóveis</h3>
-
+      <h2>Meus imóveis</h2>
       <button onclick="cadastrarImovel()">Cadastrar imóvel</button>
-
       <div id="listaImoveis"></div>
-
-      <h3>Consumo</h3>
-
-      <p>Aqui será exibido o histórico de consumo dos seus imóveis.</p>
-
-      <h3>Aparelhos</h3>
-
-      <p>Aqui será possível cadastrar os aparelhos da residência.</p>
-
-      <button onclick="logout()">Sair</button>
+      <hr />
+      <h2>Histórico de consumo</h2>
+      <canvas id="graficoConsumo"></canvas>
     </main>
-    <script>
-      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-
-      // Impede acesso sem login
-      if (!usuario) {
-        window.location.href = "index.html";
-      }
-
-      document.getElementById("boasVindas").textContent =
-        "Olá, " + usuario.nome + "!";
-      const imoveis = JSON.parse(localStorage.getItem("imoveis")) || [];
-      const listaImoveis = document.getElementById("listaImoveis");
-      const meusImoveis = imoveis.filter(function (imovel) {
-        return imovel.usuarioId === usuario.id;
-      });
-
-      if (meusImoveis.length === 0) {
-        listaImoveis.innerHTML = "<p>Nenhum imóvel cadastrado.</p>";
-      } else {
-        meusImoveis.forEach(function (imovel) {
-          const div = document.createElement("div");
-          div.innerHTML = `
-            <hr>
-
-            <h4>${imovel.identificacao}</h4>
-            <p>
-                <strong>Localidade:</strong>
-                ${imovel.endereco}
-            </p>
-            <p>
-                <strong>Tipo:</strong>
-                ${imovel.tipo}
-            </p>
-            <button onclick="selecionarImovel(${imovel.id})">
-                Selecionar imóvel
-            </button>
-        `;
-          listaImoveis.appendChild(div);
-        });
-      }
-
-      function cadastrarImovel() {
-        window.location.href = "imovel.html";
-      }
-
-      function selecionarImovel(id) {
-        localStorage.setItem("imovelSelecionado", id);
-
-        alert("Imóvel selecionado!");
-      }
-
-      function logout() {
-        localStorage.removeItem("usuarioLogado");
-        window.location.href = "index.html";
-      }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dashboard.js"></script>
   </body>
 </html>
