@@ -36,6 +36,18 @@ function criarCardImovel(imovel) {
     return registro.imovelId === imovel.id;
   });
   const resumo = calcularResumo(consumosImovel);
+  const aparelhos = JSON.parse(localStorage.getItem("aparelhos")) || [];
+  const aparelhosImovel = aparelhos.filter(function (aparelho) {
+    return aparelho.imovelId === imovel.id;
+  });
+  let consumoEstimado = 0;
+  aparelhosImovel.forEach(function (aparelho) {
+    consumoEstimado += aparelho.consumoMensal;
+  });
+  let diferenca = 0;
+  if (resumo.quantidade > 0 && aparelhosImovel.length > 0) {
+    diferenca = resumo.media - consumoEstimado;
+  }
   const div = document.createElement("div");
 
   div.innerHTML = `
@@ -52,6 +64,15 @@ function criarCardImovel(imovel) {
             ${imovel.tipo}
         </p>
         <h4>Resumo energético</h4>
+        <p>
+            <strong>Consumo estimado pelos aparelhos:</strong>
+            ${consumoEstimado.toFixed(2)}
+            kWh/mês
+        </p>
+        <p>
+            <strong>Aparelhos cadastrados:</strong>
+            ${aparelhosImovel.length}
+        </p>
         <p>
             Consumo médio:
             <strong>

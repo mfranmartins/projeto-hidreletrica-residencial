@@ -75,21 +75,55 @@ aparelhoForm.addEventListener("submit", function (event) {
   // CALCULAR CONSUMO
   const consumoMensal = (potencia / 1000) * quantidade * horasUso * 30;
 
-  // CRIAR APARELHO
-  const novoAparelho = {
-    id: Date.now(),
-    imovelId: imovelId,
-    nome: nome,
-    categoria: categoria,
-    potencia: potencia,
-    quantidade: quantidade,
-    horasUso: horasUso,
-    marca: marca,
-    modelo: modelo,
-    tensao: tensao,
-    eficiencia: eficiencia,
-    consumoMensal: consumoMensal,
-  };
+  // VERIFICAR SE ESTÁ EDITANDO
+  const aparelhoEditando = aparelhoForm.dataset.editando;
+
+  // EDITAR APARELHO
+  if (aparelhoEditando) {
+    const indice = aparelhos.findIndex(function (aparelho) {
+      return aparelho.id === Number(aparelhoEditando);
+    });
+
+    if (indice !== -1) {
+      aparelhos[indice] = {
+        id: aparelhos[indice].id,
+        imovelId: imovelId,
+        nome: nome,
+        categoria: categoria,
+        potencia: potencia,
+        quantidade: quantidade,
+        horasUso: horasUso,
+        marca: marca,
+        modelo: modelo,
+        tensao: tensao,
+        eficiencia: eficiencia,
+        consumoMensal: consumoMensal,
+      };
+    }
+
+    // Sair do modo de edição
+    delete aparelhoForm.dataset.editando;
+    mostrarMensagem("Aparelho atualizado com sucesso!");
+
+    // NOVO APARELHO
+  } else {
+    const novoAparelho = {
+      id: Date.now(),
+      imovelId: imovelId,
+      nome: nome,
+      categoria: categoria,
+      potencia: potencia,
+      quantidade: quantidade,
+      horasUso: horasUso,
+      marca: marca,
+      modelo: modelo,
+      tensao: tensao,
+      eficiencia: eficiencia,
+      consumoMensal: consumoMensal,
+    };
+    aparelhos.push(novoAparelho);
+    mostrarMensagem("Aparelho cadastrado com sucesso!");
+  }
 
   // ADICIONAR À LISTA
   aparelhos.push(novoAparelho);
@@ -102,6 +136,8 @@ aparelhoForm.addEventListener("submit", function (event) {
 
   // LIMPAR FORMULÁRIO
   aparelhoForm.reset();
+
+  document.getElementById("botaoSalvar").textContent = "Cadastrar aparelho";
 
   // ATUALIZAR LISTA
   mostrarAparelhos();
@@ -178,6 +214,11 @@ function mostrarAparelhos() {
                     kWh/mês
                 </p>
                 <button
+                    onclick="editarAparelho(${aparelho.id})"
+                >
+                    Editar aparelho
+                </button>
+                <button
                     onclick="removerAparelho(${aparelho.id})"
                 >
                     Remover aparelho
@@ -207,6 +248,32 @@ function removerAparelho(aparelhoId) {
   });
   localStorage.setItem("aparelhos", JSON.stringify(aparelhos));
   mostrarAparelhos();
+}
+
+// EDITAR APARELHO
+function editarAparelho(aparelhoId) {
+  let aparelhos = JSON.parse(localStorage.getItem("aparelhos")) || [];
+  const aparelho = aparelhos.find(function (aparelho) {
+    return aparelho.id === aparelhoId;
+  });
+  if (!aparelho) {
+    return;
+  }
+  // Colocar os dados atuais no formulário
+  document.getElementById("nome").value = aparelho.nome;
+  document.getElementById("categoria").value = aparelho.categoria;
+  document.getElementById("potencia").value = aparelho.potencia;
+  document.getElementById("quantidade").value = aparelho.quantidade;
+  document.getElementById("horasUso").value = aparelho.horasUso;
+  document.getElementById("marca").value = aparelho.marca;
+  document.getElementById("modelo").value = aparelho.modelo;
+  document.getElementById("tensao").value = aparelho.tensao;
+  document.getElementById("eficiencia").value = aparelho.eficiencia;
+  // Guardar qual aparelho está sendo editado
+  aparelhoForm.dataset.editando = aparelhoId;
+  document.getElementById("mensagem").textContent =
+    "Editando aparelho. Altere os dados e salve novamente.";
+  document.getElementById("botaoSalvar").textContent = "Salvar alterações";
 }
 // CARREGAR APARELHOS
 mostrarAparelhos();
