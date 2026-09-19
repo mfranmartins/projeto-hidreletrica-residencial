@@ -65,7 +65,17 @@ Usuário → Imóvel → Aparelhos → Consumo → Processamento → Resultado
 | PB16 | Feedback energético       | ✅         
 | PB17 | Comparação entre imóveis  | ✅         
 | PB18 | Comparação entre usuários | ⏳         
-| PB19 | Gamificação e metas       | ⏳         
+| PB19 | Gamificação e metas       | ⏳      
+| PB20 | Consumo de referência fotovoltaico    | ⏳ |
+| PB21 | Recurso solar / HSP                    | ⏳ |
+| PB22 | Percentual de atendimento              | ⏳ |
+| PB23 | Dimensionamento fotovoltaico           | ⏳ |
+| PB24 | Dataset e seleção de módulos           | ⏳ |
+| PB25 | Dataset e seleção do inversor          | ⏳ |
+| PB26 | Armazenamento por baterias             | ⏳ |
+| PB27 | Compatibilidade técnica                | ⏳ |
+| PB28 | Orçamento fotovoltaico                 | ⏳ |
+| PB29 | Proposta preliminar                    | ⏳ |
 
 ## Estimativa de consumo
 
