@@ -33,12 +33,12 @@ if (meusImoveis.length === 0) {
 function criarCardImovel(imovel) {
   const consumos = JSON.parse(localStorage.getItem("consumos")) || [];
   const consumosImovel = consumos.filter(function (registro) {
-    return registro.imovelId === imovel.id;
+    return String(registro.imovelId) === String(imovel.id);
   });
   const resumo = calcularResumo(consumosImovel);
   const aparelhos = JSON.parse(localStorage.getItem("aparelhos")) || [];
   const aparelhosImovel = aparelhos.filter(function (aparelho) {
-    return aparelho.imovelId === imovel.id;
+    return String(aparelho.imovelId) === String(imovel.id);
   });
   let consumoEstimado = 0;
   aparelhosImovel.forEach(function (aparelho) {
@@ -107,17 +107,17 @@ function criarCardImovel(imovel) {
             </strong>
         </p>
         <br>
-        <button onclick="abrirConsumo(${imovel.id})">
-            Gerenciar consumo
+        <button onclick="abrirConsumo('${imovel.id}')">
+        Gerenciar consumo
         </button>
-        <button onclick="abrirAparelhos(${imovel.id})">
-            Aparelhos
+        <button onclick="abrirAparelhos('${imovel.id}')">
+          Aparelhos
         </button>
-        <button onclick="mostrarGrafico(${imovel.id})">
-            Ver gráfico
+        <button onclick="mostrarGrafico('${imovel.id}')">
+          Ver gráfico
         </button>
-        <button onclick="removerImovel(${imovel.id})">
-            Remover imóvel
+        <button onclick="removerImovel('${imovel.id}')">
+          Remover imóvel
         </button>
     `;
   listaImoveis.appendChild(div);
@@ -191,7 +191,7 @@ function mostrarGrafico(imovelId) {
   localStorage.setItem("imovelSelecionado", imovelId);
   const consumos = JSON.parse(localStorage.getItem("consumos")) || [];
   const consumosImovel = consumos.filter(function (registro) {
-    return registro.imovelId === imovelId;
+    return String(registro.imovelId) === String(imovelId);
   });
   consumosImovel.sort(function (a, b) {
     if (a.ano !== b.ano) {
@@ -223,7 +223,7 @@ function mostrarGrafico(imovelId) {
     return registro.consumo;
   });
   const imovel = meusImoveis.find(function (imovel) {
-    return imovel.id === imovelId;
+    return String(imovel.id) === String(imovelId);
   });
   if (imovel) {
     document.getElementById("nomeGrafico").textContent =
@@ -260,7 +260,7 @@ function mostrarGrafico(imovelId) {
 // REMOVER IMÓVEL
 function removerImovel(imovelId) {
   const imovel = meusImoveis.find(function (imovel) {
-    return imovel.id === imovelId;
+    return String(imovel.id) === String(imovelId);
   });
 
   if (!imovel) {
@@ -280,27 +280,27 @@ function removerImovel(imovelId) {
   // REMOVER IMÓVEL
   let imoveisAtualizados = JSON.parse(localStorage.getItem("imoveis")) || [];
   imoveisAtualizados = imoveisAtualizados.filter(function (imovel) {
-    return imovel.id !== imovelId;
+    return String(imovel.id) !== String(imovelId);
   });
   localStorage.setItem("imoveis", JSON.stringify(imoveisAtualizados));
 
   // REMOVER CONSUMOS DO IMÓVEL
   let consumos = JSON.parse(localStorage.getItem("consumos")) || [];
   consumos = consumos.filter(function (registro) {
-    return registro.imovelId !== imovelId;
+    return String(registro.imovelId) !== String(imovelId);
   });
   localStorage.setItem("consumos", JSON.stringify(consumos));
 
   // REMOVER APARELHOS DO IMÓVEL
   let aparelhos = JSON.parse(localStorage.getItem("aparelhos")) || [];
   aparelhos = aparelhos.filter(function (aparelho) {
-    return aparelho.imovelId !== imovelId;
+    return String(aparelho.imovelId) !== String(imovelId);
   });
   localStorage.setItem("aparelhos", JSON.stringify(aparelhos));
 
   // LIMPAR IMÓVEL SELECIONADO
-  const selecionado = Number(localStorage.getItem("imovelSelecionado"));
-  if (selecionado === imovelId) {
+  const selecionado = localStorage.getItem("imovelSelecionado");
+  if (selecionado !== null && String(selecionado) === String(imovelId)) {
     localStorage.removeItem("imovelSelecionado");
   }
 
@@ -321,12 +321,13 @@ function logout() {
 }
 
 // CARREGAR GRÁFICO AUTOMATICAMENTE
-const imovelSelecionado = Number(localStorage.getItem("imovelSelecionado"));
+const imovelSelecionado = localStorage.getItem("imovelSelecionado");
 
-if (imovelSelecionado) {
+if (imovelSelecionado !== null) {
   const existe = meusImoveis.some(function (imovel) {
-    return imovel.id === imovelSelecionado;
+    return String(imovel.id) === String(imovelSelecionado);
   });
+
   if (existe) {
     mostrarGrafico(imovelSelecionado);
   }

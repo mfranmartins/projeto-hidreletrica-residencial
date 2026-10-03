@@ -1,5 +1,5 @@
 const consumoForm = document.getElementById("consumoForm");
-const imovelSelecionadoId = Number(localStorage.getItem("imovelSelecionado"));
+const imovelSelecionadoId = localStorage.getItem("imovelSelecionado");
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
 // VERIFICAR LOGIN
@@ -11,7 +11,8 @@ if (!usuarioLogado) {
 const imoveis = JSON.parse(localStorage.getItem("imoveis")) || [];
 const imovel = imoveis.find(function (imovel) {
   return (
-    imovel.id === imovelSelecionadoId && imovel.usuarioId === usuarioLogado.id
+    String(imovel.id) === String(imovelSelecionadoId) &&
+    String(imovel.usuarioId) === String(usuarioLogado.id)
   );
 });
 
@@ -77,7 +78,7 @@ function mostrarHistorico() {
   const historico = document.getElementById("historico");
   const consumos = JSON.parse(localStorage.getItem("consumos")) || [];
   const consumosImovel = consumos.filter(function (registro) {
-    return registro.imovelId === imovel.id;
+    return String(registro.imovelId) === String(imovel.id);
   });
 
   // Ordenar por ano e mês

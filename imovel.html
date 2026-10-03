@@ -42,6 +42,28 @@
 
         <button type="submit">Cadastrar imóvel</button>
       </form>
+      <section id="areaDemo" hidden>
+        <hr />
+      
+        <h2>Nenhum imóvel cadastrado?</h2>
+      
+        <p>
+          Você pode carregar um imóvel de demonstração com dados
+          simulados de consumo e aparelhos para explorar as
+          funcionalidades do sistema.
+        </p>
+      
+        <button type="button" id="carregarDemoBtn">
+          Carregar dados de demonstração
+        </button>
+      
+        <p>
+          <small>
+            Os dados carregados são fictícios e serão salvos neste
+            navegador para facilitar os testes.
+          </small>
+        </p>
+      </section>
 
       <p id="mensagem"></p>
 
@@ -50,6 +72,7 @@
       <a href="dashboard.html"> Voltar para o dashboard </a>
     </main>
 
+    <script src="js/dadosDemo.js"></script>
     <script src="js/imoveis.js"></script>
   </body>
 </html>

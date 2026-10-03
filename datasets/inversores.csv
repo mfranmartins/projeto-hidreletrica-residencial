@@ -1,0 +1,9 @@
+﻿id;fabricante;modelo;tipo;potencia_nominal_w;potencia_max_fv_w;tensao_max_entrada_v;faixa_mppt_min_v;faixa_mppt_max_v;corrente_max_entrada_a;numero_mppt;compativel_bateria;preco_brl;fornecedor;data_coleta;url_fonte
+INV001;Growatt;MIN 5000TL-X;on-grid;5000;7000;550;80;550;13.5;2;false;3925.00;Minha Casa Solar;02/10/2026;https://www.minhacasasolar.com.br/inversor-solar-monofasico-5kw-220v-2-mppt-growatt-min5000tl-x-81999
+INV002;Solis;S6-GR1P5K-S;on-grid;5000;8500;550;90;550;16;2;false;3464.00;Buyers Energy;02/10/2026;https://www.buyersenergy.com.br/produtos/inversor-solar-5-kw-solis-s6-gr1p5k-s/
+INV003;Sungrow;SG5.0RS-L;on-grid;5000;7500;600;40;560;16;2;false;4649.07;Minha Casa Solar;02/10/2026;https://www.minhacasasolar.com.br/inversor-solar-5kw-220v-2-mppt-sungrow-sg5-0rs-l-83484
+INV004;Deye;SUN-5K-SG01LP1-US;hibrido;5000;6500;500;150;425;13;2;true;5199.90;Direta Energia Solar;02/10/2026;https://pt.deyeinverter.com/product/hybrid-inverter-1/sun5-6-7-6-8ksg01lp1us-58kw-monof-sico-fase-dividida.html
+INV005;GoodWe;GW6000-ES-BR20;hibrido;6000;10800;600;60;550;16;2;true;8289.00;Minha Casa Solar;02/10/2026;https://br.goodwe.com/Ftp/Downloads/Datasheet/PT/GW_ES%20G2-BR_Datasheet-PT.pdf
+INV006;GoodWe;GW3600-ES-BR20;hibrido;3680;6480;600;60;550;16;2;true;7199.00;Minha Casa Solar;02/10/2026;https://br.goodwe.com/Ftp/Downloads/Datasheet/PT/GW_ES%20G2-BR_Datasheet-PT.pdf
+INV007;GoodWe;GW3500L-ES-BR20;hibrido;3500;6300;600;60;550;16;2;true;7625.07;Minha Casa Solar;02/10/2026;https://br.goodwe.com/Ftp/Downloads/Datasheet/PT/GW_ES%20G2-BR_Datasheet-PT.pdf
+INV008;SAJ;R5-8K-S2-15;on-grid;8000;12000;600;90;550;30;2;false;4084.62;MeuGerador;02/10/2026;https://img.saj-electric.com/file/R5-3~8K-S2-15%20Series%20Datasheet-20230505093247335.pdf

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dimensionamento - Hidrelétrica Residencial</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <main class="container">
+
+        <h1>Dimensionamento do Sistema</h1>
+
+        <h2 id="nomeImovel"></h2>
+
+        <hr />
+
+        <h2>Consumo de referência</h2>
+
+        <p>
+            Com base no histórico de consumo do imóvel, o sistema calcula uma
+            referência para o dimensionamento da geração fotovoltaica.
+        </p>
+
+        <div id="resultadoDimensionamento">
+
+            <p>
+                <strong>Meses analisados:</strong>
+                <span id="mesesAnalisados">0</span>
+            </p>
+
+            <p>
+                <strong>Consumo médio mensal:</strong>
+                <span id="consumoMedioMensal">0</span> kWh/mês
+            </p>
+
+            <p>
+                <strong>Consumo médio diário:</strong>
+                <span id="consumoMedioDiario">0</span> kWh/dia
+            </p>
+
+        </div>
+
+        <p id="mensagem"></p>
+
+        <hr />
+
+        <h2>Estimativa da potência fotovoltaica</h2>
+
+        <form id="dimensionamentoForm">
+
+            <label for="hsp">
+                Horas de Sol Pleno (HSP):
+            </label>
+
+            <input type="number" id="hsp" min="1" max="10" step="0.1" value="4.5" required />
+
+            <label for="performanceRatio">
+                Performance Ratio (PR):
+            </label>
+
+            <input type="number" id="performanceRatio" min="0.1" max="1" step="0.01" value="0.8" required />
+
+            <br /><br />
+
+            <button type="submit">
+                Calcular potência fotovoltaica
+            </button>
+
+        </form>
+
+        <div id="resultadoPotencia">
+
+            <p>
+                <strong>
+                    Potência fotovoltaica estimada:
+                </strong>
+
+                <span id="potenciaFV">0</span>
+                kWp
+            </p>
+
+        </div>
+
+        <p id="mensagemPotencia"></p>
+
+        <hr />
+
+        <h2>Dimensionamento dos módulos fotovoltaicos</h2>
+        
+        <p>
+            Com base na potência fotovoltaica estimada, o sistema calcula
+            a quantidade necessária de módulos para cada modelo disponível.
+        </p>
+        
+        <div id="listaModulos">
+            <p>Carregando módulos...</p>
+        </div>
+        
+        <p id="mensagemModulos"></p>
+        
+        <hr />
+        
+        <h2>Dimensionamento do inversor</h2>
+        
+        <p>
+            Com base na potência fotovoltaica estimada, o sistema verifica
+            quais inversores disponíveis são compatíveis com o projeto.
+        </p>
+        
+        <div id="listaInversores">
+            <p>Carregando inversores...</p>
+        </div>
+        
+        <p id="mensagemInversores"></p>
+        
+        <hr />
+        
+        <h2>Dimensionamento das baterias</h2>
+        
+        <p>
+            O sistema calcula a capacidade de armazenamento necessária
+            considerando o consumo diário, a autonomia desejada e a
+            profundidade de descarga (DoD) de cada bateria.
+        </p>
+        
+        <form id="bateriaForm">
+        
+            <label for="autonomia">
+                Autonomia desejada (dias):
+            </label>
+        
+            <input type="number" id="autonomia" value="1" min="1" step="1" />
+        
+            <button type="submit">
+                Calcular baterias
+            </button>
+        
+        </form>
+        
+        <div id="resumoBateria"></div>
+        
+        <div id="listaBaterias">
+            <p>Carregando baterias...</p>
+        </div>
+        
+        <p id="mensagemBaterias"></p>
+
+        <a href="dashboard.html">
+            Voltar para o dashboard
+        </a>
+
+    </main>
+
+    <!-- JavaScript deve ficar depois dos elementos HTML -->
+    <script src="js/dimensionamento.js"></script>
+
+</body>
+
+</html>

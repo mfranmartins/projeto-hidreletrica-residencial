@@ -1,0 +1,11 @@
+﻿id;fabricante;modelo;potencia_wp;voc_v;isc_a;vmp_v;imp_a;eficiencia_pct;preco_brl;fornecedor;data_coleta;url_fonte
+FV001;Canadian Solar;CS6W-550MS;550;49.6;14.0;41.7;13.2;21.3;589.00;Minha Casa Solar;02/10/2026;https://www.minhacasasolar.com.br/painel-solar-550w-monocristalino-half-cell-canadian-cs6w-550ms-82127
+FV002;JA Solar;JAM66D45-615/LB;615;48.3;16.10;39.96;15.39;22.8;751.62;Minha Casa Solar;02/10/2026;https://www.enfsolar.com/pv/panel-datasheet/crystalline/70112
+FV003;Honor Solar;HY-M12/132H-700;700;47.9;18.49;40.0;17.51;22.5;949.00;Minha Casa Solar;02/10/2026;https://www.honorsolar.com.br/arquivos/modulos/91e1155629b6b5434b37c2db0abfd2ad-arquivo.pdf
+FV004;ReneSola;RS6-580NBG-E3;580;52.5;13.95;43.8;13.22;22.45;565.65;Cabear Soluções em Tecnologia e Energia Solar;02/10/2026;https://solar.evolusom.com.br/produto/388172
+FV005;Hanersun;HN21RN-66HT610W;610;48.72;15.94;40.59;15.03;22.6;936.14;Solarman;02/10/2026;https://www.hanersun.com/wp-content/uploads/2024/08/Data-Sheet-HN21RN-66HT610W-Bifacial-PT.pdf
+FV006;Osda;ODA610-33V-MHDRZ;610;48.68;15.96;40.46;15.08;22.6;842.37;MeuGerador;02/10/2026;https://www.meugerador.com.br/cdn/shop/files/DATASHEET_PAINEL_SOLAR_OSDA_610W_BIFACIAL.pdf
+FV007;Sunova;SS585-66MDH;585;48.38;15.26;40.63;14.40;22.65;799.23;MeuGerador;02/10/2026;https://www.meugerador.com.br/products/painel-solar-585w-monofacial-preto-sunova-monocristalino-halfcell-ntype-132-celulas
+FV008;Hanersun;HN21RN-66HT620W;620;48.92;16.00;40.95;15.15;23.0;910.28;MeuGerador;02/10/2026;https://www.meugerador.com.br/products/painel-solar-hanersun-620w-hitouch-bifacial-monocristalino-half-cell-ntype-hn21rn-66ht620w
+FV009;Resun;RS8I-560M-F30;560;50.05;14.07;42.12;13.30;21.7;768.02;MeuGerador;02/10/2026;https://www.meugerador.com.br/products/painel-solar-560w-resun-monocristalino-halfcell-ptype
+FV010;ERA;ERA-RC66HD(CF);620;48.50;16.15;40.15;15.45;22.95;787.52;MeuGerador;02/10/2026;https://www.meugerador.com.br/products/painel-solar-620w-bifacial-preto-era-monocristalino-halfcell-ntype-132-celulas

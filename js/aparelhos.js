@@ -7,14 +7,17 @@ if (!usuario) {
 }
 
 // IMÓVEL SELECIONADO
-const imovelId = Number(localStorage.getItem("imovelSelecionado"));
+const imovelId = localStorage.getItem("imovelSelecionado");
 
 // BUSCAR IMÓVEIS
 const imoveis = JSON.parse(localStorage.getItem("imoveis")) || [];
 
 // BUSCAR IMÓVEL
 const imovel = imoveis.find(function (imovel) {
-  return imovel.id === imovelId && imovel.usuarioId === usuario.id;
+  return (
+    String(imovel.id) === String(imovelId) &&
+    String(imovel.usuarioId) === String(usuario.id)
+  );
 });
 
 // VERIFICAR IMÓVEL
@@ -87,7 +90,7 @@ aparelhoForm.addEventListener("submit", function (event) {
   // EDITAR APARELHO
   if (aparelhoEditando) {
     const indice = aparelhos.findIndex(function (aparelho) {
-      return aparelho.id === Number(aparelhoEditando);
+      return String(aparelho.id) === String(aparelhoEditando);
     });
 
     if (indice !== -1) {
@@ -228,7 +231,7 @@ function mostrarAparelhos() {
 
   // Filtrar aparelhos do imóvel
   const aparelhosImovel = aparelhos.filter(function (aparelho) {
-    return aparelho.imovelId === imovelId;
+    return String(aparelho.imovelId) === String(imovelId);
   });
   lista.innerHTML = "";
 
@@ -302,15 +305,12 @@ function mostrarAparelhos() {
                 <p>
                     ${feedback.texto}
                 </p>
-                <button
-                    onclick="editarAparelho(${aparelho.id})"
-                >
-                    Editar aparelho
+                <button onclick="editarAparelho('${aparelho.id}')">
+                  Editar aparelho
                 </button>
-                <button
-                    onclick="removerAparelho(${aparelho.id})"
-                >
-                    Remover aparelho
+
+                <button onclick="removerAparelho('${aparelho.id}')">
+                  Remover aparelho
                 </button>
             `;
     lista.appendChild(div);
@@ -333,7 +333,7 @@ function removerAparelho(aparelhoId) {
   }
   let aparelhos = JSON.parse(localStorage.getItem("aparelhos")) || [];
   aparelhos = aparelhos.filter(function (aparelho) {
-    return aparelho.id !== aparelhoId;
+    return String(aparelho.id) !== String(aparelhoId);
   });
   localStorage.setItem("aparelhos", JSON.stringify(aparelhos));
   mostrarAparelhos();
@@ -343,7 +343,7 @@ function removerAparelho(aparelhoId) {
 function editarAparelho(aparelhoId) {
   let aparelhos = JSON.parse(localStorage.getItem("aparelhos")) || [];
   const aparelho = aparelhos.find(function (aparelho) {
-    return aparelho.id === aparelhoId;
+    return String(aparelho.id) === String(aparelhoId);
   });
   if (!aparelho) {
     return;
