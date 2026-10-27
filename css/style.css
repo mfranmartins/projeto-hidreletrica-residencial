@@ -37,3 +37,213 @@ button {
 #mensagem {
   margin-top: 15px;
 }
+
+/* ===== Dimensionamento fotovoltaico / Proposta ===== */
+.container.largo {
+  max-width: 1100px;
+  margin: 30px auto;
+}
+
+.container.largo form {
+  flex-direction: column;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.grade label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.grade input,
+.grade select,
+.grade textarea {
+  width: 100%;
+}
+
+textarea {
+  padding: 10px;
+  font-family: inherit;
+}
+
+.passo {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 18px 0;
+}
+
+.passo h2 {
+  margin-top: 0;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+}
+
+.metricas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.metrica {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fafafa;
+}
+
+.metrica small {
+  display: block;
+  color: #555;
+}
+
+.metrica strong {
+  font-size: 1.25em;
+}
+
+.tabela-wrap {
+  overflow-x: auto;
+}
+
+table.tabela {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.92em;
+}
+
+table.tabela th,
+table.tabela td {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+table.tabela th {
+  background: #f0f0f0;
+}
+
+table.tabela tr.sel {
+  background: #e8f5e9;
+}
+
+table.tabela tr.off {
+  color: #777;
+  background: #fafafa;
+}
+
+table.tabela td.num,
+table.tabela th.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 0.8em;
+  background: #eee;
+}
+
+.badge.ok {
+  background: #c8e6c9;
+}
+
+.badge.rec {
+  background: #bbdefb;
+}
+
+.badge.no {
+  background: #ffcdd2;
+}
+
+.msg-erro {
+  border-left: 4px solid #c62828;
+  background: #ffebee;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+
+.msg-aviso {
+  border-left: 4px solid #f9a825;
+  background: #fffde7;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+
+.msg-ok {
+  border-left: 4px solid #2e7d32;
+  background: #e8f5e9;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+
+.msg-info {
+  border-left: 4px solid #1565c0;
+  background: #e3f2fd;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+
+.escolha {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.escolha label {
+  font-weight: normal;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.escolha input {
+  margin: 0;
+  padding: 0;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.nota {
+  color: #555;
+  font-size: 0.88em;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .container.largo {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .passo,
+  .card {
+    break-inside: avoid;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+}

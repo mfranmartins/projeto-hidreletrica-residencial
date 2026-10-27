@@ -76,16 +76,53 @@ Usuário → Imóvel → Aparelhos → Consumo → Processamento → Resultado
 | PB17 | Comparação entre imóveis  | ✅         
 | PB18 | Comparação entre usuários | ⏳         
 | PB19 | Gamificação e metas       | ⏳      
-| PB20 | Consumo de referência fotovoltaico    | ⏳ |
-| PB21 | Recurso solar / HSP                    | ⏳ |
-| PB22 | Percentual de atendimento              | ⏳ |
-| PB23 | Dimensionamento fotovoltaico           | ⏳ |
-| PB24 | Dataset e seleção de módulos           | ⏳ |
-| PB25 | Dataset e seleção do inversor          | ⏳ |
-| PB26 | Armazenamento por baterias             | ⏳ |
-| PB27 | Compatibilidade técnica                | ⏳ |
-| PB28 | Orçamento fotovoltaico                 | ⏳ |
-| PB29 | Proposta preliminar                    | ⏳ |
+| PB20 | Consumo de referência fotovoltaico    | ✅ |
+| PB21 | Recurso solar / HSP                    | ✅ |
+| PB22 | Percentual de atendimento              | ✅ |
+| PB23 | Dimensionamento fotovoltaico           | ✅ |
+| PB24 | Dataset e seleção de módulos           | ✅ |
+| PB25 | Dataset e seleção do inversor          | ✅ |
+| PB26 | Armazenamento por baterias             | ✅ |
+| PB27 | Compatibilidade técnica                | ✅ |
+| PB28 | Orçamento fotovoltaico                 | ✅ |
+| PB29 | Proposta preliminar                    | ✅ |
+
+## Dimensionamento fotovoltaico (PB20–PB29 e backlog restante)
+
+Fluxo: **Dashboard → "Dimensionar sistema fotovoltaico" → Salvar → Proposta** (`dimensionamento.html` → `proposta.html`).
+
+| Etapa | Onde |
+| ----- | ---- |
+| Seleção da residência já cadastrada, reaproveitando consumo e aparelhos | `dimensionamento.js` |
+| Consumo de referência (histórico ou aparelhos), potência instalada em kW | `solar.js › consumoReferencia` |
+| HSP por localidade (`datasets/hsp.csv`), PR justificado, % de atendimento, tarifa | `solar.js`, `hsp.csv` |
+| Potência necessária: `P(kWp) = consumo diário × % ÷ (HSP × PR)` | `solar.js › potenciaNecessaria` |
+| Módulos (quantidade arredondada para cima, potência efetivamente instalada) | `solar.js › dimensionarModulos` |
+| Inversor: Voc corrigida, faixa MPPT, corrente, potência FV, relação FV/inversor, nº de strings, até 3 inversores; ranking técnico + preço (nunca só menor preço) | `solar.js › avaliarInversor / rankearInversores` |
+| Baterias: autonomia em horas, `capacidade nominal = energia ÷ (DoD × eficiência)` | `solar.js › dimensionarBateria` |
+| Geração diária/mensal, atendimento, excedente, energia compensada | `solar.js › calcularGeracao` |
+| Orçamento por item com fonte do preço | `solar.js › montarOrcamento` |
+| Economia mensal/anual e **payback simples** | `solar.js › calcularEconomia / calcularPayback` |
+| Comparação com × sem baterias | `dimensionamento.js` |
+| Validações (consumo ≤ 0, HSP ≤ 0, PR inválido, divisão por zero, autonomia negativa, equipamento incompatível, campos ausentes) | `solar.js › validarParametros` |
+| Persistência e proposta imprimível (PDF pelo navegador) | `dimStorage.js`, `proposta.js` |
+
+Valores de equipamentos ficam **fora do código**, em `datasets/*.csv` (com fornecedor, data de coleta e URL). Para atualizar preços ou incluir equipamentos, edite o CSV — não é preciso mexer no código.
+
+### Premissas
+* Dia = mês ÷ 30 (mesma convenção do restante do sistema).
+* PR padrão 0,75 e tarifa padrão R$ 0,95/kWh são **valores de referência editáveis**; informe a tarifa da sua fatura.
+* Taxa mínima de disponibilidade: 30/50/100 kWh (mono/bi/trifásico) abatida da energia compensável.
+* Voc corrigida para baixa temperatura com fator 1,10; relação FV/inversor ideal 1,2 (mínima aceita 0,4).
+* `datasets/hsp.csv` contém valores **aproximados** por capital; confirme no SunData/CRESESB (a fonte está registrada em cada linha).
+* O dataset de inversores não traz eficiência (PB07-T02); a coluna `eficiencia_pct` é usada automaticamente se for adicionada.
+* "Outros custos" (instalação, estrutura, cabos) são 0% por padrão: o orçamento e o payback cobrem só equipamentos até que o percentual seja informado.
+* Payback simples não considera reajuste de tarifa, degradação, manutenção, financiamento nem TUSD Fio B.
+
+### Testes
+```bash
+node tests/solar.test.js
+```
 
 ## Estimativa de consumo
 
@@ -111,7 +148,7 @@ Essa abordagem é utilizada para validação do MVP. Em versões futuras, preten
 1. Clone o repositório.
 2. Abra o projeto no Visual Studio Code.
 3. Abra `index.html`.
-4. Execute com o **Live Server**.
+4. Execute com o **Live Server** (ou `python -m http.server` na raiz do projeto). Os datasets CSV só carregam via servidor, não por `file://`.
 5. Cadastre um usuário e faça login.
 6. Cadastre um imóvel e utilize as funcionalidades disponíveis.
 

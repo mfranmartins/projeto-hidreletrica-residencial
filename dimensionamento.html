@@ -1,162 +1,152 @@
 <!doctype html>
 <html lang="pt-BR">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dimensionamento - Hidrelétrica Residencial</title>
+    <title>Dimensionamento Fotovoltaico - Hidrelétrica Residencial</title>
     <link rel="stylesheet" href="css/style.css" />
-</head>
+  </head>
+  <body>
+    <main class="container largo">
+      <h1>Dimensionamento do Sistema Fotovoltaico</h1>
+      <p class="no-print">
+        <a href="dashboard.html">← Voltar para o dashboard</a>
+      </p>
+      <div id="avisoDatasets"></div>
 
-<body>
-    <main class="container">
+      <!-- 1. RESIDÊNCIA (PB01) -->
+      <section class="passo">
+        <h2>1. Residência</h2>
+        <p class="nota">Selecione uma residência já cadastrada. Os dados, aparelhos e consumos são reaproveitados automaticamente.</p>
+        <div class="grade">
+          <div>
+            <label for="selImovel">Residência cadastrada</label>
+            <select id="selImovel"></select>
+          </div>
+        </div>
+        <div id="resumoImovel"></div>
+      </section>
 
-        <h1>Dimensionamento do Sistema</h1>
+      <!-- 2. CONSUMO DE REFERÊNCIA (PB02) -->
+      <section class="passo">
+        <h2>2. Consumo de referência</h2>
+        <div id="baseConsumoBox" class="escolha"></div>
+        <div id="resumoConsumo"></div>
+      </section>
 
-        <h2 id="nomeImovel"></h2>
-
-        <hr />
-
-        <h2>Consumo de referência</h2>
-
-        <p>
-            Com base no histórico de consumo do imóvel, o sistema calcula uma
-            referência para o dimensionamento da geração fotovoltaica.
+      <!-- 3. DADOS SOLARES E PREMISSAS (PB03) -->
+      <section class="passo">
+        <h2>3. Disponibilidade solar e premissas</h2>
+        <div class="grade">
+          <div>
+            <label for="hsp">HSP - Horas de Sol Pico (kWh/m²·dia)</label>
+            <input type="number" id="hsp" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="selCidadeHSP">Usar HSP de outra cidade (dataset)</label>
+            <select id="selCidadeHSP"></select>
+          </div>
+          <div>
+            <label for="pr">PR - Fator global de desempenho (0 a 1)</label>
+            <input type="number" id="pr" min="0" max="1" step="0.01" />
+          </div>
+          <div>
+            <label for="pct">Percentual do consumo a atender (%)</label>
+            <input type="number" id="pct" min="1" max="100" step="1" value="100" />
+          </div>
+          <div>
+            <label for="tarifa">Tarifa de energia (R$/kWh, com impostos)</label>
+            <input type="number" id="tarifa" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="ligacao">Tipo de ligação (taxa mínima)</label>
+            <select id="ligacao">
+              <option value="monofasico">Monofásico (30 kWh)</option>
+              <option value="bifasico" selected>Bifásico (50 kWh)</option>
+              <option value="trifasico">Trifásico (100 kWh)</option>
+            </select>
+          </div>
+          <div>
+            <label for="outrosPct">Outros custos (% sobre equipamentos)</label>
+            <input type="number" id="outrosPct" min="0" step="1" value="0" />
+          </div>
+        </div>
+        <p id="hspFonteTxt" class="nota"></p>
+        <label for="prJust" style="font-weight:bold">Justificativa do PR adotado</label>
+        <textarea id="prJust" rows="2" style="width:100%"></textarea>
+        <p class="nota">
+          "Outros custos" (instalação, estrutura, cabos, proteções) não constam nos datasets. Se ficar em 0%, o orçamento e o payback consideram
+          <strong>apenas os equipamentos</strong>.
         </p>
+        <div id="avisosParametros"></div>
+      </section>
 
-        <div id="resultadoDimensionamento">
+      <!-- 4. POTÊNCIA NECESSÁRIA (PB04) -->
+      <section class="passo">
+        <h2>4. Potência fotovoltaica necessária</h2>
+        <div id="resultadoPotencia"><p>Preencha os dados acima.</p></div>
+      </section>
 
-            <p>
-                <strong>Meses analisados:</strong>
-                <span id="mesesAnalisados">0</span>
-            </p>
+      <!-- 5. MÓDULOS (PB05/PB06) -->
+      <section class="passo">
+        <h2>5. Módulos fotovoltaicos</h2>
+        <div id="listaModulos"></div>
+      </section>
 
-            <p>
-                <strong>Consumo médio mensal:</strong>
-                <span id="consumoMedioMensal">0</span> kWh/mês
-            </p>
+      <!-- 6. INVERSOR (PB07/PB25/PB27) -->
+      <section class="passo">
+        <h2>6. Inversor e compatibilidade técnica</h2>
+        <div id="listaInversores"></div>
+      </section>
 
-            <p>
-                <strong>Consumo médio diário:</strong>
-                <span id="consumoMedioDiario">0</span> kWh/dia
-            </p>
-
+      <!-- 7. ARMAZENAMENTO (PB10/PB11/PB12/PB26) -->
+      <section class="passo">
+        <h2>7. Armazenamento (baterias)</h2>
+        <div class="escolha">
+          <label><input type="radio" name="cenario" value="sem" checked /> Sistema sem baterias (on-grid)</label>
+          <label><input type="radio" name="cenario" value="com" /> Sistema com baterias</label>
         </div>
-
-        <p id="mensagem"></p>
-
-        <hr />
-
-        <h2>Estimativa da potência fotovoltaica</h2>
-
-        <form id="dimensionamentoForm">
-
-            <label for="hsp">
-                Horas de Sol Pleno (HSP):
-            </label>
-
-            <input type="number" id="hsp" min="1" max="10" step="0.1" value="4.5" required />
-
-            <label for="performanceRatio">
-                Performance Ratio (PR):
-            </label>
-
-            <input type="number" id="performanceRatio" min="0.1" max="1" step="0.01" value="0.8" required />
-
-            <br /><br />
-
-            <button type="submit">
-                Calcular potência fotovoltaica
-            </button>
-
-        </form>
-
-        <div id="resultadoPotencia">
-
-            <p>
-                <strong>
-                    Potência fotovoltaica estimada:
-                </strong>
-
-                <span id="potenciaFV">0</span>
-                kWp
-            </p>
-
+        <div id="areaBateria" hidden>
+          <div class="grade">
+            <div>
+              <label for="autonomia">Autonomia desejada (horas)</label>
+              <input type="number" id="autonomia" min="0" step="0.5" value="8" />
+            </div>
+            <div>
+              <label for="eficBat">Eficiência de ida e volta (0 a 1)</label>
+              <input type="number" id="eficBat" min="0" max="1" step="0.01" value="0.9" />
+            </div>
+          </div>
+          <div id="resumoBateria"></div>
+          <div id="listaBaterias"></div>
         </div>
+      </section>
 
-        <p id="mensagemPotencia"></p>
+      <!-- 8. RESULTADOS (PB08/09/13/15/16) -->
+      <section class="passo">
+        <h2>8. Resultado do cenário selecionado</h2>
+        <div id="resultados"></div>
+      </section>
 
-        <hr />
+      <!-- 9. COMPARAÇÃO (PB14) -->
+      <section class="passo">
+        <h2>9. Comparação: com e sem armazenamento</h2>
+        <div id="comparacao"></div>
+      </section>
 
-        <h2>Dimensionamento dos módulos fotovoltaicos</h2>
-        
-        <p>
-            Com base na potência fotovoltaica estimada, o sistema calcula
-            a quantidade necessária de módulos para cada modelo disponível.
-        </p>
-        
-        <div id="listaModulos">
-            <p>Carregando módulos...</p>
+      <!-- 10. SALVAR E PROPOSTA (PB20/PB21) -->
+      <section class="passo no-print">
+        <h2>10. Salvar e gerar proposta</h2>
+        <div class="acoes">
+          <button type="button" id="btnSalvar">Salvar dimensionamento</button>
+          <button type="button" id="btnProposta">Salvar e abrir proposta</button>
         </div>
-        
-        <p id="mensagemModulos"></p>
-        
-        <hr />
-        
-        <h2>Dimensionamento do inversor</h2>
-        
-        <p>
-            Com base na potência fotovoltaica estimada, o sistema verifica
-            quais inversores disponíveis são compatíveis com o projeto.
-        </p>
-        
-        <div id="listaInversores">
-            <p>Carregando inversores...</p>
-        </div>
-        
-        <p id="mensagemInversores"></p>
-        
-        <hr />
-        
-        <h2>Dimensionamento das baterias</h2>
-        
-        <p>
-            O sistema calcula a capacidade de armazenamento necessária
-            considerando o consumo diário, a autonomia desejada e a
-            profundidade de descarga (DoD) de cada bateria.
-        </p>
-        
-        <form id="bateriaForm">
-        
-            <label for="autonomia">
-                Autonomia desejada (dias):
-            </label>
-        
-            <input type="number" id="autonomia" value="1" min="1" step="1" />
-        
-            <button type="submit">
-                Calcular baterias
-            </button>
-        
-        </form>
-        
-        <div id="resumoBateria"></div>
-        
-        <div id="listaBaterias">
-            <p>Carregando baterias...</p>
-        </div>
-        
-        <p id="mensagemBaterias"></p>
-
-        <a href="dashboard.html">
-            Voltar para o dashboard
-        </a>
-
+        <p id="mensagemSalvar"></p>
+        <div id="salvos"></div>
+      </section>
     </main>
-
-    <!-- JavaScript deve ficar depois dos elementos HTML -->
+    <script src="js/solar.js"></script>
+    <script src="js/dimStorage.js"></script>
     <script src="js/dimensionamento.js"></script>
-
-</body>
-
+  </body>
 </html>

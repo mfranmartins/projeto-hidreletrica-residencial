@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proposta Preliminar Fotovoltaica - Hidrelétrica Residencial</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container largo">
+      <div class="no-print">
+        <p><a href="dashboard.html">← Dashboard</a> · <a href="dimensionamento.html">← Voltar ao dimensionamento</a></p>
+        <div class="acoes">
+          <select id="selProposta" aria-label="Dimensionamento salvo"></select>
+          <button type="button" id="btnImprimir">Imprimir / salvar em PDF</button>
+        </div>
+      </div>
+      <div id="proposta"><p>Carregando proposta...</p></div>
+    </main>
+    <script src="js/solar.js"></script>
+    <script src="js/dimStorage.js"></script>
+    <script src="js/proposta.js"></script>
+  </body>
+</html>

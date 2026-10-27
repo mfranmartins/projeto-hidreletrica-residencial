@@ -116,6 +116,14 @@ function criarCardImovel(imovel) {
         <button onclick="mostrarGrafico('${imovel.id}')">
           Ver gráfico
         </button>
+        <button onclick="abrirDimensionamento('${imovel.id}')">
+          Dimensionar sistema fotovoltaico
+        </button>
+        ${
+          DimStorage.doImovel(usuario.id, imovel.id).length > 0
+            ? `<button onclick="abrirProposta('${imovel.id}')">Ver proposta salva</button>`
+            : ""
+        }
         <button onclick="removerImovel('${imovel.id}')">
           Remover imóvel
         </button>
@@ -183,6 +191,18 @@ function abrirConsumo(id) {
 function abrirAparelhos(id) {
   localStorage.setItem("imovelSelecionado", id);
   window.location.href = "aparelhos.html";
+}
+
+// ABRIR DIMENSIONAMENTO FOTOVOLTAICO
+function abrirDimensionamento(id) {
+  localStorage.setItem("imovelSelecionado", id);
+  window.location.href = "dimensionamento.html";
+}
+
+// ABRIR PROPOSTA FOTOVOLTAICA SALVA
+function abrirProposta(id) {
+  localStorage.setItem("imovelSelecionado", id);
+  window.location.href = "proposta.html";
 }
 
 // MOSTRAR GRÁFICO
@@ -297,6 +317,9 @@ function removerImovel(imovelId) {
     return String(aparelho.imovelId) !== String(imovelId);
   });
   localStorage.setItem("aparelhos", JSON.stringify(aparelhos));
+
+  // REMOVER DIMENSIONAMENTOS FOTOVOLTAICOS DO IMÓVEL
+  DimStorage.removerDoImovel(imovelId);
 
   // LIMPAR IMÓVEL SELECIONADO
   const selecionado = localStorage.getItem("imovelSelecionado");
